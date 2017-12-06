@@ -36,3 +36,18 @@ function pathname ($name, $prefix = PATH_TEMP) {
 function reponame ($name) {
     return PATH_SOURCE . '/' . $name;
 }
+
+/**
+ * 文件树
+ * @param  [type] $list [description]
+ * @return [type]       [description]
+ */
+function filetree ($list) {
+    return array_reduce(array_keys($list), function ($carry, $item) use ($list) {
+        return $carry + [
+            basename($item) => array_map(function ($v) {
+                return basename($v, '.md');
+            }, $list[$item])
+        ];
+    }, []);
+}

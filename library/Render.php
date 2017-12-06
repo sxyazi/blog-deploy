@@ -1,24 +1,30 @@
 <?php
 
 class Render {
+    public $list = [];
+
+    public function __construct ($list) {
+        $this->list = $list;
+        $this->handle();
+    }
 
     /**
      * 处理方法
      * @return [type] [description]
      */
-    public static function handle ($list) {
-        foreach ($list as $archive => $article) {
+    public function handle () {
+        foreach ($this->list as $archive => $article) {
 
             // 文章
-            array_map('Render::article', $article);
+            array_map([ $this, 'article' ], $article);
 
             // 分类
-            self::archive($archive, $article);
+            $this->archive($archive, $article);
 
         }
 
         // 自定义页面
-        self::custom();
+        $this->custom();
     }
 
     /**
@@ -27,7 +33,7 @@ class Render {
      * @param  [type] $arg [description]
      * @return [type]      [description]
      */
-    public static function generic ($f, $arg) {
+    public function generic ($f, $arg) {
         ob_start();
         extract($arg);
         require(PATH_TEMPLATE . '/' . $f . '.php');
@@ -38,14 +44,13 @@ class Render {
 
     /**
      * 文章
-     * @param  [type] $aname 文章文件名（.md 文件）
-     * @param  [type] $bname 写到文件的名称
-     * @return [type]        [description]
+     * @param  [type] $name [description]
+     * @return [type]       [description]
      */
-    public static function article ($name) {
+    public function article ($name) {
         $file = filename($name);
 
-        file_put_contents($file, self::generic('article', [
+        file_put_contents($file, $this->generic('article', [
             'content' => file_get_contents($name)
         ]));
 
@@ -58,7 +63,7 @@ class Render {
      * @param  [type] $article [description]
      * @return [type]          [description]
      */
-    public static function archive ($archive, $article) {
+    public function archive ($archive, $article) {
         $file = pathname($archive);
 
         // 检查目录是否存在
@@ -75,7 +80,7 @@ class Render {
             ];
         }, $article);
 
-        file_put_contents($file, self::generic('archive', [
+        file_put_contents($file, $this->generic('archive', [
             'list' => $list,
             'name' => basename($archive)
         ]));
@@ -87,7 +92,7 @@ class Render {
      * 自定义页面
      * @return [type] [description]
      */
-    public static function custom () {
+    public function custom () {
         $config = [];
         $ignore = [ 'article', 'archive' ];
 
@@ -104,8 +109,9 @@ class Render {
                 continue;
             }
 
-            file_put_contents(PATH_TEMP . "/$name.html", self::generic($name, [
-                'config' => $config
+            file_put_contents(PATH_TEMP . "/$name.html", $this->generic($name, [
+                'config' => $config,
+                'list'   => filetree($this->list)
             ]));
         }
     }

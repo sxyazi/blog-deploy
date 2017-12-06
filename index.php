@@ -14,4 +14,4 @@ spl_autoload_register(function ($name) {
 });
 
 Builder::assets();
-Render::handle(Builder::traverse());
+new Render(Builder::traverse());
