@@ -16,5 +16,7 @@ if [[ $1 != 'clean' ]]; then
     php index.php $PATH_DIST $PATH_TEMP $PATH_SOURCE $PATH_TEMPLATE
     cp -af $PATH_TEMP/* $PATH_DIST
     cd $PATH_DIST
+    git add -A
+    git commit -m 'auto deploy by blog-deploy'
     git push -u $1 master
 fi
