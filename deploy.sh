@@ -14,7 +14,7 @@ if [[ $1 != 'clean' ]]; then
     git clone $1 $PATH_DIST
     git clone $2 $PATH_SOURCE
     php index.php $PATH_DIST $PATH_TEMP $PATH_SOURCE $PATH_TEMPLATE
+    cp -af $PATH_TEMP/* $PATH_DIST
     cd $PATH_DIST
-    cp -af $PATH_TEMP/* .
     git push -u $1 master
 fi

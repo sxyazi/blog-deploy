@@ -9,6 +9,11 @@ class Builder {
     public static function traverse () {
         // 目录
         $arr = array_reduce(glob(reponame('*')), function ($carry, $item) {
+            // 跳过隐藏的目录或文件
+            if ($item[0] == '.') {
+                return $carry;
+            }
+
             if (is_dir($item) && Builder::expired($item)) {
                 return $carry + [ $item => null ];
             }
