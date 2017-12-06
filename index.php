@@ -10,10 +10,7 @@ define('PATH_TEMPLATE', $argv[4]);
 
 require 'function.php';
 spl_autoload_register(function ($name) {
-    $file = 'library/' . lcfirst(str_replace('\\', '/', $name)) . '.php';
-    if (is_file($file)) {
-        require $file;
-    }
+    require 'library/' . lcfirst(str_replace('\\', '/', $name)) . '.php';
 });
 
 Builder::assets();
