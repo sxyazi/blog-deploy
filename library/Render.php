@@ -75,7 +75,7 @@ class Render {
             return [
                 'file'  => filename($v),
                 'title' => rtrim(basename($v), '.md'),
-                'ctime' => filectime($v),
+                'ctime' => fileatime($v),
                 'mtime' => filemtime($v),
             ];
         }, $article);

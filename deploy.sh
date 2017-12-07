@@ -1,3 +1,4 @@
+PATH_PWD=$(pwd)
 PATH_DIST='_dist'
 PATH_TEMP='_temp'
 PATH_SOURCE='_source'
@@ -22,9 +23,14 @@ else
 
     git clone $1 $PATH_DIST
     git clone $2 $PATH_SOURCE
+    git config core.quotepath false
 
-    cd $PATH_DIST
-    git ls-files | while read file; do touch -d $(git log -1 --format="@%ct" "$file") "$file"; done
+    cd $PATH_SOURCE
+    git ls-files | while read line; do
+        touch -md $(git log -1 --format='@%at' "$line") "$line"
+        touch -ad $(git log --format='@%at' "$line" | tail -1) "$line"
+    done
+    cd $PATH_PWD
 
     php index.php $PATH_DIST $PATH_TEMP $PATH_SOURCE $PATH_TEMPLATE
     cp -af $PATH_TEMP/* $PATH_DIST
