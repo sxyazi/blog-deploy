@@ -27,7 +27,7 @@ else
     mkdir -p $PATH_TEMP/article
     mkdir -p $PATH_TEMP/category
 
-    git config core.quotepath false
+    git config --global core.quotepath false
     git clone $2 $PATH_SOURCE
     if [ -d $PATH_DIST ]; then
         cd $PATH_DIST
