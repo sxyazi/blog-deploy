@@ -22,7 +22,7 @@ elif [[ $1 == 'push' ]]; then
     cd $PATH_DIST
     git add -A
     git commit -m 'auto deploy by blog-deploy'
-    git push -u $1 master
+    git push -u $2 master
 else
     mkdir -p $PATH_TEMP/article
     mkdir -p $PATH_TEMP/category
