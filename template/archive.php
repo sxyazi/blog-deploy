@@ -1,14 +1,16 @@
-<?php
-    foreach ($list as $v) {
-?>
+<?php foreach ($tree as $cate => $article) { ?>
 
-<div>
-    <p><?= $v['file'] ?></p>
-    <p><?= $v['title'] ?></p>
-    <p><?= $v['ctime'] ?></p>
-    <p><?= $v['mtime'] ?></p>
-</div>
+    <h2 class="high">
+        <a href="/category/<?= $cate ?>.html"><?= $cate ?></a>
+    </h2>
 
-<?php
-    }
-?>
+    <?php foreach ($article as $v) { ?>
+
+        <article>
+            <a href="/article/<?= $v['id'] ?>.html"><?= $v['name'] ?></a>
+            <time><?= date('Y-m-d', $v['ctime']) ?></time>
+        </article>
+
+    <?php } ?>
+
+<?php } ?>

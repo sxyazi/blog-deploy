@@ -1,13 +1,19 @@
+#!/bin/bash
 PATH_PWD=$(pwd)
 PATH_DIST='_dist'
 PATH_TEMP='_temp'
 PATH_SOURCE='_source'
 PATH_TEMPLATE='template'
 
-if [[ $1 != 'push' ]]; then
-    rm -rf $PATH_DIST
+if [ $1 != 'push' ]; then
     rm -rf $PATH_TEMP
     rm -rf $PATH_SOURCE
+fi
+
+if type gtouch > /dev/null 2>&1; then
+    TOUCH='gtouch'
+else
+    TOUCH='touch'
 fi
 
 if [[ $1 == 'clean' ]]; then
@@ -18,17 +24,23 @@ elif [[ $1 == 'push' ]]; then
     git commit -m 'auto deploy by blog-deploy'
     git push -u $1 master
 else
-    mkdir -p $PATH_TEMP/archive
     mkdir -p $PATH_TEMP/article
+    mkdir -p $PATH_TEMP/category
 
-    git clone $1 $PATH_DIST
-    git clone $2 $PATH_SOURCE
     git config core.quotepath false
+    git clone $2 $PATH_SOURCE
+    if [ -d $PATH_DIST ]; then
+        cd $PATH_DIST
+        git pull
+        cd $PATH_PWD
+    else
+        git clone $1 $PATH_DIST
+    fi
 
     cd $PATH_SOURCE
     git ls-files | while read line; do
-        touch -md $(git log -1 --format='@%at' "$line") "$line"
-        touch -ad $(git log --format='@%at' "$line" | tail -1) "$line"
+        $TOUCH -md $(git log -1 --format='@%at' "$line") "$line"
+        $TOUCH -ad $(git log --format='@%at' "$line" | tail -1) "$line"
     done
     cd $PATH_PWD
 

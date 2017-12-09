@@ -7,26 +7,18 @@ class Builder {
      * @return [type] [description]
      */
     public static function traverse () {
-        // 目录
-        $arr = array_reduce(glob(reponame('*')), function ($carry, $item) {
+        return array_reduce(glob(reponame('*')), function ($carry, $item) {
             // 跳过隐藏的目录或文件
             if ($item[0] == '.') {
                 return $carry;
             }
 
-            if (is_dir($item) && Builder::expired($item)) {
-                return $carry + [ $item => null ];
+            if (is_dir($item)) {
+                return $carry + [ $item => glob("$item/*.md") ];
             }
 
             return $carry;
         }, []);
-
-        // 文件
-        foreach (array_keys($arr) as $v) {
-            $arr[$v] = array_filter(glob("$v/*.md"), 'Builder::expired');
-        }
-
-        return $arr;
     }
 
     /**

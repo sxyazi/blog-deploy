@@ -13,13 +13,17 @@ class Render {
      * @return [type] [description]
      */
     public function handle () {
-        foreach ($this->list as $archive => $article) {
+        foreach ($this->list as $cate => $article) {
 
-            // 文章
-            array_map([ $this, 'article' ], $article);
+            if (!Builder::expired($cate)) {
+                continue;
+            }
 
             // 分类
-            $this->archive($archive, $article);
+            $this->category($cate, $article);
+
+            // 文章
+            array_map([ $this, 'article' ], array_filter($article, 'Builder::expired'));
 
         }
 
@@ -59,12 +63,12 @@ class Render {
 
     /**
      * 归档
-     * @param  [type] $archive [description]
+     * @param  [type] $cate    [description]
      * @param  [type] $article [description]
      * @return [type]          [description]
      */
-    public function archive ($archive, $article) {
-        $file = pathname($archive);
+    public function category ($cate, $article) {
+        $file = pathname($cate);
 
         // 检查目录是否存在
         if (!is_dir($dir = dirname($file))) {
@@ -73,19 +77,20 @@ class Render {
 
         $list = array_map(function ($v) {
             return [
-                'file'  => filename($v),
-                'title' => rtrim(basename($v), '.md'),
+                'id'    => hex($v),
+                'file'  => $v,
+                'name'  => basename($v, '.md'),
                 'ctime' => fileatime($v),
                 'mtime' => filemtime($v),
             ];
         }, $article);
 
-        file_put_contents($file, $this->generic('archive', [
+        file_put_contents($file, $this->generic('category', [
             'list' => $list,
-            'name' => basename($archive)
+            'name' => basename($cate)
         ]));
 
-        keeptime($file, $archive);
+        keeptime($file, $cate);
     }
 
     /**
@@ -93,12 +98,16 @@ class Render {
      * @return [type] [description]
      */
     public function custom () {
-        $config = [];
-        $ignore = [ 'article', 'archive' ];
+        $ignore = [ 'article', 'category' ];
+
+        // 模板变量
+        $var         = [ 'config' => [] ];
+        $var['tree'] = filetree($this->list);
+        $var['list'] = filelist($var['tree']);
 
         // 配置文件存在
         if (is_file(reponame('blog.yml'))) {
-            $config = Spyc::YAMLLoadString(preg_replace(
+            $var['config'] = Spyc::YAMLLoadString(preg_replace(
                 '/([\r\n]+)/', "$1\n", file_get_contents(reponame('blog.yml'))
             ));
         }
@@ -109,10 +118,7 @@ class Render {
                 continue;
             }
 
-            file_put_contents(PATH_TEMP . "/$name.html", $this->generic($name, [
-                'config' => $config,
-                'list'   => filetree($this->list)
-            ]));
+            file_put_contents(PATH_TEMP . "/$name.html", $this->generic($name, $var));
         }
     }
 
