@@ -1,10 +1,24 @@
 <?php
 
 class Render {
-    public $list = [];
 
-    public function __construct ($list) {
-        $this->list = $list;
+    // 任务列表
+    private $task = [];
+
+    // 文件树
+    protected $tree = [];
+    // 文件列表
+    protected $list = [];
+
+    // 自定义页面忽略文件
+    const CUSTOM_IGNORE = [ 'article', 'category' ];
+
+
+    public function __construct ($task) {
+        $this->task = $task;
+        $this->tree = filetree($this->task);
+        $this->list = filelist($this->tree);
+
         $this->handle();
     }
 
@@ -13,7 +27,7 @@ class Render {
      * @return [type] [description]
      */
     public function handle () {
-        foreach ($this->list as $cate => $article) {
+        foreach ($this->task as $cate => $article) {
 
             if (!Builder::expired($cate)) {
                 continue;
@@ -99,27 +113,26 @@ class Render {
      * @return [type] [description]
      */
     public function custom () {
-        $ignore = [ 'article', 'category' ];
-
-        // 模板变量
-        $var         = [ 'config' => [] ];
-        $var['tree'] = filetree($this->list);
-        $var['list'] = filelist($var['tree']);
+        $config = [];
 
         // 配置文件存在
         if (is_file(reponame('blog.yml'))) {
-            $var['config'] = Spyc::YAMLLoadString(preg_replace(
+            $config = Spyc::YAMLLoadString(preg_replace(
                 '/([\r\n]+)/', "$1\n", file_get_contents(reponame('blog.yml'))
             ));
         }
 
         foreach (glob(PATH_TEMPLATE . '/*.php') as $v) {
             $name = basename($v, '.php');
-            if (in_array($name, $ignore)) {
+            if (in_array($name, self::CUSTOM_IGNORE)) {
                 continue;
             }
 
-            file_put_contents(PATH_TEMP . "/$name.html", $this->generic($name, $var));
+            file_put_contents(PATH_TEMP . "/$name.html", $this->generic($name, [
+                'tree'   => $this->tree,
+                'list'   => $this->list,
+                'config' => $config
+            ]));
         }
     }
 

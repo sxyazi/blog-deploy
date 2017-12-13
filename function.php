@@ -48,11 +48,11 @@ function reponame ($name) {
 
 /**
  * 文件树
- * @param  [type] $list [description]
+ * @param  [type] $task [description]
  * @return [type]       [description]
  */
-function filetree ($list) {
-    return array_reduce(array_keys($list), function ($carry, $item) use ($list) {
+function filetree ($task) {
+    return array_reduce(array_keys($task), function ($carry, $item) use ($task) {
         return $carry + [
             basename($item) => array_map(function ($v) {
                 return [
@@ -62,7 +62,7 @@ function filetree ($list) {
                     'ctime' => fileatime($v),
                     'mtime' => filemtime($v)
                 ];
-            }, $list[$item])
+            }, $task[$item])
         ];
     }, []);
 }
