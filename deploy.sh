@@ -37,8 +37,23 @@ else
         git clone $1 $PATH_DIST
     fi
 
+    cd $PATH_DIST
+    git ls-files | while read line; do
+        $TOUCH -md $(git log -1 --format='@%at' "$line") "$line"
+        $TOUCH -ad $(git log --format='@%at' "$line" | tail -1) "$line"
+    done
+    git ls-tree -dr --name-only HEAD | while read line; do
+        $TOUCH -md $(git log -1 --format='@%at' "$line") "$line"
+        $TOUCH -ad $(git log --format='@%at' "$line" | tail -1) "$line"
+    done
+    cd $PATH_PWD
+
     cd $PATH_SOURCE
     git ls-files | while read line; do
+        $TOUCH -md $(git log -1 --format='@%at' "$line") "$line"
+        $TOUCH -ad $(git log --format='@%at' "$line" | tail -1) "$line"
+    done
+    git ls-tree -dr --name-only HEAD | while read line; do
         $TOUCH -md $(git log -1 --format='@%at' "$line") "$line"
         $TOUCH -ad $(git log --format='@%at' "$line" | tail -1) "$line"
     done
