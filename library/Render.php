@@ -55,7 +55,7 @@ class Render {
         $file = filename($name);
 
         file_put_contents($file, $this->generic('article', [
-            'name'    => $name,
+            'name'    => basename($name, '.md'),
             'content' => file_get_contents($name)
         ]));
 

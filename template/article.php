@@ -5,6 +5,6 @@
     <title><?= $name ?></title>
 </head>
 <body>
-<div id="article"><?= $content ?></div>
+<pre id="article"><?= $content ?></pre>
 </body>
 </html>
