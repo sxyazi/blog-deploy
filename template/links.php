@@ -1,12 +1,18 @@
-<h2 class="high">Friends</h2>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>链接</title>
+</head>
+<body>
+<div id="links">
 
-<ul class="links">
-    <li>
-        <span>阿珏博客</span>
-        <a href="https://www.52ecy.cn" target="_blank">https://www.52ecy.cn</a>
-    </li>
-    <li>
-        <span>刘浩然博客</span>
-        <a href="http://www.lhrsite.com" target="_blank">http://www.lhrsite.com</a>
-    </li>
-</ul>
+# Friends
+
+<?php foreach ($config['links'] as $v) { ?>
+- <?= $v['title'] ?> [<?= $v['url'] ?>](<?= $v['url'] ?>)
+<?php } ?>
+
+</div>
+</body>
+</html>

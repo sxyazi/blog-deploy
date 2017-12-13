@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>归档</title>
+</head>
+<body>
+<div id="archive">
 <?php foreach ($tree as $cate => $article) { ?>
 
     <h2 class="high">
@@ -14,3 +22,6 @@
     <?php } ?>
 
 <?php } ?>
+</div>
+</body>
+</html>
