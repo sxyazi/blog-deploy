@@ -9,6 +9,7 @@ define('PATH_SOURCE', $argv[3]);
 define('PATH_TEMPLATE', $argv[4]);
 
 require 'function.php';
+date_default_timezone_set('PRC');
 spl_autoload_register(function ($name) {
     require 'library/' . ucwords(str_replace('\\', '/', $name)) . '.php';
 });

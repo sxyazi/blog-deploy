@@ -78,9 +78,10 @@ function filelist ($tree) {
         $list = array_merge($list, $v);
     }
 
-    uasort($list, function ($a, $b) {
+    usort($list, function ($a, $b) {
         return $a['ctime'] < $b['ctime'] ? 1 : -1;
     });
+
     return $list;
 }
 
