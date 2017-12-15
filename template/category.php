@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>note</title>
+    <title><?= $name ?></title>
 </head>
 <body>
 <div id="category">
