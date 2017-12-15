@@ -6,7 +6,7 @@
  * @return [type]       [description]
  */
 function hex ($name) {
-    return substr(md5(basename($name, '.md')), 0, 16);
+    return substr(md5($name), 0, 16);
 }
 
 /**
@@ -34,7 +34,7 @@ function filename ($name, $prefix = PATH_TEMP) {
  * @return [type]       [description]
  */
 function pathname ($name, $prefix = PATH_TEMP) {
-    return "$prefix/category/" . implode('/', array_slice(explode('/', $name), 1)) . '.html';
+    return "$prefix/category/" . implode('/', array_slice(explode('/', $name), -1)) . '.html';
 }
 
 /**
@@ -82,4 +82,15 @@ function filelist ($tree) {
         return $a['ctime'] < $b['ctime'] ? 1 : -1;
     });
     return $list;
+}
+
+/**
+ * 文件信息
+ * @param  [type] $tree [description]
+ * @param  [type] $name [description]
+ * @return [type]       [description]
+ */
+function fileinfo ($list, $name) {
+    $key = array_search($name, array_column($list, 'file'));
+    return $key === false ? [] : $list[$key];
 }

@@ -68,10 +68,11 @@ class Render {
     public function article ($name) {
         $file = filename($name);
 
-        file_put_contents($file, $this->generic('article', [
-            'name'    => basename($name, '.md'),
-            'content' => file_get_contents($name)
-        ]));
+        file_put_contents($file, $this->generic('article',
+            array_merge(fileinfo($this->list, $name), [
+                'content' => file_get_contents($name)
+            ])
+        ));
 
         keeptime($file, $name);
     }
