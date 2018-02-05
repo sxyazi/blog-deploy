@@ -13,6 +13,6 @@
     </p>
 
     <hr>
-    <pre id="article"><?= $content ?></pre>
+    <pre id="article"><?= htmlspecialchars($content) ?></pre>
 </body>
 </html>

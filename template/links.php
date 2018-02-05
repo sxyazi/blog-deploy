@@ -6,7 +6,7 @@
 </head>
 <body>
 <pre id="links">
-# Friends
+# Links
 
 <?php foreach ($config['links'] as $v) { ?>
 <?= $v['title'] ?> [<?= $v['url'] ?>](<?= $v['url'] ?>)

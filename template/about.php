@@ -5,6 +5,6 @@
     <title>关于</title>
 </head>
 <body>
-<pre id="about"><?= $config['about'] ?></pre>
+<pre id="about"><?= htmlspecialchars($config['about']) ?></pre>
 </body>
 </html>
