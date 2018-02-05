@@ -6,14 +6,14 @@
 </head>
 <body>
 <div id="home">
-    <?php foreach ($list as $v) { ?>
+<?php foreach ($list as $v) { ?>
 
-        <article>
-            <a href="/article/<?= $v['id'] ?>.html"><?= $v['name'] ?></a>
-            <time><?= date('Y-m-d', $v['ctime']) ?></time>
-        </article>
+    <article>
+        <a href="/article/<?= $v['id'] ?>"><?= $v['name'] ?></a>
+        <time><?= date('Y-m-d', $v['ctime']) ?></time>
+    </article>
 
-    <?php } ?>
+<?php } ?>
 </div>
 </body>
 </html>
