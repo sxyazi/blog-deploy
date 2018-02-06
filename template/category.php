@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title><?= $name ?></title>
+    <script>location.href = '/#/category/<?= $name ?>'</script>
 </head>
 <body>
 <div id="category">

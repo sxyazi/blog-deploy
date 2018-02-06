@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title><?= $name ?></title>
+    <script>location.href = '/#/article/<?= $id ?>'</script>
 </head>
 <body>
     <p>

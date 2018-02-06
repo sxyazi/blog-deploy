@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>链接</title>
+    <script>location.href = '/#/links'</script>
 </head>
 <body>
 <pre id="links">

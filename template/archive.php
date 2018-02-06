@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>归档</title>
+    <script>location.href = '/#/archive'</script>
 </head>
 <body>
 <div id="archive">

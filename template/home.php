@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>首页</title>
+    <script>location.href = '/#/home'</script>
 </head>
 <body>
 <div id="home">
